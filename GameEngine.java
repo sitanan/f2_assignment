@@ -11,7 +11,7 @@ import java.util.Iterator;
 import javax.swing.Timer;
 
 
-public class GameEngine implements KeyListener{
+public class GameEngine implements KeyListener, GameReporter{
 	GamePanel gp;
 		
 	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();	
@@ -62,20 +62,15 @@ public class GameEngine implements KeyListener{
 			if(!e.isAlive()){
 				e_iter.remove();
 				gp.sprites.remove(e);
-				
 			}
 		}
 		
-		gp.updateGameUI();
+		gp.updateGameUI(this);
 		
 		Rectangle2D.Double vr = v.getRectangle();
 		Rectangle2D.Double er;
 		for(Enemy e : enemies){
 			er = e.getRectangle();
-			if(er.intersects(vr)){
-				die();
-				return;
-			}
 		}
 	}
 	
@@ -97,6 +92,9 @@ public class GameEngine implements KeyListener{
 		}
 	}
 
+	public long getScore(){
+		return score;
+	}
 	
 	@Override
 	public void keyPressed(KeyEvent e) {
